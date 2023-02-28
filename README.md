@@ -18,22 +18,40 @@ public class Exercise {
      * Method that fills the array with prime numbers, using specified range and
      * outputs it as a string
      *
-     * @param limit end of the range of prime numbers
+     * @param startRange start of the range
+     * @param endRange end of the range
      * @return string
      */
-    public static String PrimeTheArray(int limit) {
-        if (limit <= 0) {
-            return "Wrong limit!";
+    public static String PrimeTheArray(int startRange, int endRange) {
+        if (startRange <= 0 || endRange <= 0 || startRange > endRange) {
+            return "Inputed range is incorrect!";
         }
 
-        // Begin the iteration from 2 and up to the limit, filtering by prime 
+        // Begin the iteration from startRange and up to the endRange, filtering by prime 
         // number, casting everything to an array
-        int primedArray[] = IntStream.iterate(2, i -> i + 1)
-                .filter(j -> IntStream.range(2, j).noneMatch(e -> j % e == 0))
-                .limit(limit)
+        int primedArray[] = IntStream.range(startRange, endRange)
+                .filter(value -> isSimple(value))
                 .toArray();
 
         return Arrays.toString(primedArray);
+    }
+
+    /**
+     * Method that checks if the transferred number is the prime number
+     *
+     * @param number value to check
+     * @return boolean
+     */
+    public static boolean isSimple(int number) {
+        if (number < 2) {
+            return false;
+        }
+        for (int i = 2; i < number / 2; i++) {
+            if (number % i == 0) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 ```
@@ -46,8 +64,7 @@ import domain.Exercise;
 public class TestResult {
 
     public static void main(String[] args) {
-        int limit = 5;
-        System.out.println(Exercise.PrimeTheArray(limit));
+        System.out.println(Exercise.PrimeTheArray(25, 110));
     }
 }
 ```
